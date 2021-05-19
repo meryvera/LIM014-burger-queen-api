@@ -45,7 +45,7 @@ Esto implica que tendremos que partir por leer la implementación existente, y
 familiarizarnos con el _stack_ elegido ([Node.js](https://nodejs.org/) y
 [Express](https://expressjs.com/)) y complementarlo con un motor de bases de
 datos, el cual tu deberás elegir entre [MongoDB](https://www.mongodb.com/),
-[PostgreSQL](https://www.postgresql.org/) y [MySQL](https://www.mysql.com/).
+
 
 La clienta nos ha dado un [link a la documentación](https://laboratoria.github.io/burger-queen-api/)
 que especifica el comportamiento esperado de la API que expondremos por
@@ -57,7 +57,7 @@ implementar  la aplicación, qué parámetros esperan, qué deben responder, etc
 El objetivo principal de aprendizaje es adquirir experiencia con **Node.js**
 como herramienta para desarrollar _aplicaciones de servidor_, junto con una
 serie de herramientas comunes usadas en este tipo de contexto (Express como
-framework, MongoDB, PostgreSQL o MySQL como base datos, contenedores de docker,
+framework, MongoDB como base datos, contenedores de docker,
 etc).
 
 En este proyecto tendrás que construir un servidor web que debe _servir_ `JSON`
@@ -66,7 +66,7 @@ sobre `HTTP`, y desplegarlo en un servidor en la nube.
 Para completar el proyecto tendrás que familiarizarte con conceptos como
 **rutas** (_routes_), **URLs**, **HTTP** y **REST** (verbs, request, response,
 headers, body, status codes...), **JSON**, **JWT** (_JSON Web Tokens_),
-**conexión con una base datos** (`MongoDB`, `PostgreSQL`, o `MySQL`),
+**conexión con una base datos** (`MongoDB`),
 **variables de entorno**, **deployment**, **contenedores de `docker`**...
 
 ### Node
@@ -120,7 +120,7 @@ headers, body, status codes...), **JSON**, **JWT** (_JSON Web Tokens_),
 * [ ] Contenedores (Docker).
 * [ ] Docker compose.
 
-### Base de datos (MongoDB, PostgreSQL o MySQL)
+### Base de datos (MongoDB)
 
 * [ ] Instalación.
 * [ ] Conexión a través de cliente.
@@ -234,7 +234,7 @@ Nuestra aplicación usa las siguientes variables de entorno:
 * `PORT`: Si no se ha especificado un puerto como argumento de lína de comando,
   podemos usar la variable de entorno `PORT` para especificar el puerto. Valor
   por defecto `8080`.
-* `DB_URL`: El _string_ de conexión de _MongoDB_ o _MySQL_. Cuando ejecutemos la
+* `DB_URL`: El _string_ de conexión de _MongoDB_ . Cuando ejecutemos la
   aplicación en nuestra computadora (en entorno de desarrollo), podemos usar el
   una base de datos local, pero en producción deberemos utilizar las instancias
   configuradas con `docker-compose` (mas sobre esto en la siguiente sección de
@@ -273,8 +273,7 @@ explorar las siguientes opciones:
 
 * [Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) es
   probablemente la opción más _sencilla_ (la que requiere menos configuración) y
-  nos permite alojar tanto el servidor web como la base de datos (PostgreSQL) en
-  el mismo sitio con pocos clicks.
+  nos permite alojar el servidor web con pocos clicks.
 * Si quieres explorar opciones más personalizadas y ver docker del lado del
   servidor puedes cosiderar proveedores como
   [AWS (Amazon Web Services)](https://aws.amazon.com/) o
@@ -294,8 +293,6 @@ dudes en consultar con tus pares y tus coaches.
 
 * [Express](https://expressjs.com/)
 * [MongoDB](https://www.mongodb.com/)
-* [PostgreSQL](https://www.postgresql.org/)
-* [MySQL](https://www.mysql.com/)
 * [docker](https://docs.docker.com/)
 * [docker compose](https://docs.docker.com/compose/)
 * [Postman](https://www.getpostman.com)
