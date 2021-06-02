@@ -22,7 +22,6 @@ module.exports = (secret) => (req, resp, next) => {
   });
 };
 
-
 module.exports.isAuthenticated = (req) => (
   // TODO: decidir por la informacion del request si la usuaria esta autenticada
   false
