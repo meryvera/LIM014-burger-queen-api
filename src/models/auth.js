@@ -1,24 +1,22 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
-// definir el modelo de la base de datos
-const userSchema = new Schema({
+const authSchema = new Schema({
   email: {
     type: String,
     required: true,
+    min: 6,
+    max: 100,
   },
-  roles: {
-    admin: {
-      type: Boolean,
-      required: true,
-    },
+  password: {
+    type: String,
+    required: true,
   },
-  timestamps: true,
 });
 
 // una función que realice comparaciones antes de realizar un guardado en la base de datos,
 // necesario para poder encriptar (hashear) la contraseña antes de que se guarde
-userSchema.pre('save', (next) => {
+authSchema.pre('save', (next) => {
   // verifica que si algún campo distinto a la contraseña
   // ha sido modificado entonces no será necesario hashear la contraseña
   if (!this.isModified('password')) return next();
@@ -33,7 +31,7 @@ userSchema.pre('save', (next) => {
 // necesitamos una función que nos ayude a comparar la
 // versión en texto plano que recibimos del cliente con la
 // versión encyptada que tenemos guardada en la base de datos
-userSchema.methods.comparePassword = (password, cb) => {
+authSchema.methods.comparePassword = (password, cb) => {
   // bcrypt.compartePassword(contraseñaenlaBD, contraseñaenelcliente, callback)
   bcrypt.comparePassword(password, this.password, (err, isMatch) => {
     // si ocurre un error retorna un cb
@@ -46,4 +44,4 @@ userSchema.methods.comparePassword = (password, cb) => {
   });
 };
 
-module.exports = model('User', userSchema);
+module.exports = model('Auth', authSchema);

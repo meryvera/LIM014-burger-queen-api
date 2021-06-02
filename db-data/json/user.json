@@ -1,7 +1,0 @@
-{
-    "_id": "1",
-    "email": "milumon@outlook.com",
-    "roles": [
-        { "admin" : true}
-    ]
-}
