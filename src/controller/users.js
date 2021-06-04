@@ -1,4 +1,4 @@
-const userDB = require('../models/user');
+const User = require('../models/user');
 
 // GET '/users'
 const getUsers = (req, res, next) => {
@@ -15,7 +15,17 @@ const getOneUser = (req, res, next) => {
 // POST '/users'
 
 const newUser = (req, res, next) => {
+  const adminUser = {
+    email: req.body.admin,
+    password: req.body.password,
+    roles: { admin: req.body.roles.admin },
+  };
+
+  User.save(adminUser);
+
   res.json({ message: 'POST one user' });
+
+  next();
 };
 
 // PUT '/users/:uid'

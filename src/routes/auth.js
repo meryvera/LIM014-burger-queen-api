@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../../config');
+const User = require('../models/user');
 
 const { secret } = config;
 
@@ -17,7 +18,7 @@ module.exports = (app, nextMain) => {
    * @code {400} si no se proveen `email` o `password` o ninguno de los dos
    * @auth No requiere autenticación
    */
-  app.post('/auth', (req, resp, next) => {
+  app.post('/auth', (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -26,8 +27,48 @@ module.exports = (app, nextMain) => {
 
     // TODO: autenticar a la usuarix
 
+    const authUser = {
+      email,
+      password,
+    };
 
-    next();
+    try {
+      User.findOne(authUser, (user) => {
+        console.log(user);
+        if (!user) {
+          return res.status(400).json({
+            message: 'User Not Exist',
+          });
+        }
+
+        const isMatch = user.comparePassword(password);
+
+        if (!isMatch) {
+          return res.status(400).json({
+            message: 'Incorrect Password !',
+          });
+        }
+      });
+
+      jwt.sign(
+        authUser,
+        'randomString',
+        {
+          expiresIn: 3600,
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.status(200).json({
+            token,
+          });
+        },
+      );
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({
+        message: 'Server Error',
+      });
+    }
   });
 
   return nextMain();

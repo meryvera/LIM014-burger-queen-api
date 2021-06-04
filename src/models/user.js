@@ -7,6 +7,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   roles: {
     admin: {
       type: Boolean,
@@ -17,7 +21,7 @@ const userSchema = new Schema({
 
 // una función que realice comparaciones antes de realizar un guardado en la base de datos,
 // necesario para poder encriptar (hashear) la contraseña antes de que se guarde
-userSchema.pre('save', (next) => {
+/* userSchema.pre('save', function (next) {
   // verifica que si algún campo distinto a la contraseña
   // ha sido modificado entonces no será necesario hashear la contraseña
   if (!this.isModified('password')) return next();
@@ -27,7 +31,7 @@ userSchema.pre('save', (next) => {
     this.password = passwordHash;
     next();
   });
-});
+}); */
 
 // necesitamos una función que nos ayude a comparar la
 // versión en texto plano que recibimos del cliente con la

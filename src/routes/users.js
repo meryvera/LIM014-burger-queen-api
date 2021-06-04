@@ -5,6 +5,8 @@ const {
   requireAdmin,
 } = require('../middleware/auth');
 
+const User = require('../models/user');
+
 const {
   getUsers,
   getOneUser,
@@ -26,9 +28,18 @@ const initAdminUser = (app, next) => {
   };
 
   // TODO: crear usuaria admin
-  
 
+  User.findOne(adminUser, (err, doc) => {
+    if (err) {
+      return next(400);
+    }
 
+    if (doc) {
+      return next(200);
+    }
+    const newUser = new User(adminUser);
+    newUser.save();
+  });
 
   next();
 };
