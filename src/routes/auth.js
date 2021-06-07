@@ -1,10 +1,4 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const config = require('../../config');
-const User = require('../models/user');
-
-const { secret } = config;
-
+const { authenthicateUser } = require('../controller/auth');
 /** @module auth */
 module.exports = (app, nextMain) => {
   /**
@@ -19,56 +13,7 @@ module.exports = (app, nextMain) => {
    * @code {400} si no se proveen `email` o `password` o ninguno de los dos
    * @auth No requiere autenticación
    */
-  app.post('/auth', (req, res, next) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-      return next(400);
-    }
-
-    // TODO: autenticar a la usuarix
-
-    const authUser = {
-      email,
-      password,
-    };
-
-    const userFind = User.findOne({ email });
-
-    userFind.then((doc) => {
-      if (!doc) {
-        return res.status(400).json({
-          message: 'User Not Exist',
-        });
-      }
-      console.log(doc.password);
-      bcrypt.compare(password, doc.password, (err, data) => {
-        // if error than throw error
-        if (err) throw err;
-
-        // if both match than you can do anything
-        else if (!data) {
-          return res.status(400).json({
-            message: 'Incorrect Password !',
-          });
-        }
-
-        jwt.sign(
-          authUser,
-          secret,
-          {
-            expiresIn: 3600,
-          },
-          (err, token) => {
-            if (err) throw err;
-            return res.status(200).json({
-              token,
-            });
-          },
-        );
-      });
-    });
-  });
+  app.post('/auth', authenthicateUser);
 
   return nextMain();
 };
