@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const config = require('../../config');
 const User = require('../models/user');
 
@@ -32,43 +33,41 @@ module.exports = (app, nextMain) => {
       password,
     };
 
-    try {
-      User.findOne(authUser, (user) => {
-        console.log(user);
-        if (!user) {
-          return res.status(400).json({
-            message: 'User Not Exist',
-          });
-        }
+    const userFind = User.findOne({ email });
 
-        const isMatch = user.comparePassword(password);
+    userFind.then((doc) => {
+      if (!doc) {
+        return res.status(400).json({
+          message: 'User Not Exist',
+        });
+      }
+      console.log(doc.password);
+      bcrypt.compare(password, doc.password, (err, data) => {
+        // if error than throw error
+        if (err) throw err;
 
-        if (!isMatch) {
+        // if both match than you can do anything
+        else if (!data) {
           return res.status(400).json({
             message: 'Incorrect Password !',
           });
         }
-      });
 
-      jwt.sign(
-        authUser,
-        'randomString',
-        {
-          expiresIn: 3600,
-        },
-        (err, token) => {
-          if (err) throw err;
-          res.status(200).json({
-            token,
-          });
-        },
-      );
-    } catch (e) {
-      console.error(e);
-      res.status(500).json({
-        message: 'Server Error',
+        jwt.sign(
+          authUser,
+          secret,
+          {
+            expiresIn: 3600,
+          },
+          (err, token) => {
+            if (err) throw err;
+            return res.status(200).json({
+              token,
+            });
+          },
+        );
       });
-    }
+    });
   });
 
   return nextMain();

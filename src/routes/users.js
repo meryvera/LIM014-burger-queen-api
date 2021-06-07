@@ -23,23 +23,24 @@ const initAdminUser = (app, next) => {
 
   const adminUser = {
     email: adminEmail,
-    password: bcrypt.hashSync(adminPassword, 10),
+    password: adminPassword,
     roles: { admin: true },
   };
 
   // TODO: crear usuaria admin
 
-  User.findOne(adminUser, (err, doc) => {
-    if (err) {
-      return next(400);
-    }
+  const userFind = User.findOne({ email: adminEmail });
 
+  userFind.then((doc) => {
     if (doc) {
+      console.log('El correo existe');
       return next(200);
     }
+
     const newUser = new User(adminUser);
     newUser.save();
-  });
+  })
+    .catch((err) => console.log(err));
 
   next();
 };
