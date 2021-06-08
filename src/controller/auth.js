@@ -35,7 +35,7 @@ module.exports.authenthicateUser = (req, res, next) => {
       jwt.sign(
         {
           email: doc.email,
-          role: doc.role,
+          role: doc.roles,
         },
         secret,
         {
