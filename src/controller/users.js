@@ -2,28 +2,35 @@ const User = require('../models/user');
 
 // GET '/users'
 const getUsers = (req, res, next) => {
-  res.json({ message: 'TRABAJANDO CON EL CONTROLLER' });
+  User.find({}).then((user) => {
+    res.json(user);
+  }).catch(next);
 };
 
 //   app.get('/users', requireAdmin, getUsers);
 // GET '/users/:uid'
 
 const getOneUser = (req, res, next) => {
-  res.json({ message: 'GET one user' });
+  User.findOne({ _id: req.params.uid }).then((user) => {
+    console.info('GAAAAAAAAAAA', req);
+    res.json(user);
+  }).catch(next);
 };
 
 // POST '/users'
 
 const newUser = (req, res, next) => {
   const adminUser = {
-    email: req.body.admin,
+    email: req.body.email,
     password: req.body.password,
     roles: { admin: req.body.roles.admin },
   };
 
-  User.save(adminUser);
+  const newUser = new User(adminUser);
 
-  res.json({ message: 'POST one user' });
+  newUser.save(adminUser);
+
+  res.json(adminUser);
 
   next();
 };
