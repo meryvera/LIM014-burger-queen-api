@@ -31,8 +31,12 @@ module.exports.authenthicateUser = (req, res, next) => {
           message: 'Incorrect Password !',
         });
       }
+
       jwt.sign(
-        { email },
+        {
+          email: doc.email,
+          role: doc.role,
+        },
         secret,
         {
           expiresIn: 3600,
