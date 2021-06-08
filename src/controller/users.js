@@ -2,7 +2,7 @@ const User = require('../models/user');
 
 // GET '/users'
 const getUsers = (req, res, next) => {
-  res.json({ message: 'GET all user' });
+  res.json({ message: 'TRABAJANDO CON EL CONTROLLER' });
 };
 
 //   app.get('/users', requireAdmin, getUsers);
