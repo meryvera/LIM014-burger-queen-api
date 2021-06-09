@@ -20,8 +20,6 @@ module.exports = (secret) => (req, resp, next) => {
       return next(403);
     }
 
-    console.info('REQUEST AL INICIO', req);
-
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
     const userFind = User.findOne({ email: decodedToken.email });
 
@@ -29,7 +27,6 @@ module.exports = (secret) => (req, resp, next) => {
       if (doc) {
         req.authToken = decodedToken;
 
-        console.info('REQUEST DESPUES', req);
         console.info('El usuario del token si existe');
         return next();
       }
