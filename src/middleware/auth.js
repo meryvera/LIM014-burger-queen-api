@@ -21,22 +21,23 @@ module.exports = (secret) => (req, resp, next) => {
     }
 
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
-    const userFind = User.findOne({ email: decodedToken.email });
+    const userFind = User.findById(decodedToken.uid);
 
     userFind.then((doc) => {
       if (doc) {
         req.authToken = decodedToken;
-
-        console.info('El usuario del token si existe');
+        console.info('AUTHTOKEN ', req.authToken);
         return next();
       }
+
+      console.info('El usuario del token es inválido');
     });
   });
 };
 
 module.exports.isAuthenticated = (req) => (
   // console.info('isadmin', req.authToken)
-  req.authToken.id
+  req.authToken.uid
   // TODO: decidir por la informacion del request si la usuaria esta autenticada
 );
 
