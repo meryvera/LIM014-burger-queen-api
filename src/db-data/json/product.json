@@ -1,5 +1,5 @@
 {
-    "productId": "1",
+    "product._id": "1",
     "product.name": "Salchipapa",
     "product.price": 10.3,
     "product.image": "www.url.com/image.jpg",

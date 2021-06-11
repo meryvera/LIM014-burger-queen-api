@@ -36,7 +36,7 @@ module.exports.authenthicateUser = (req, res, next) => {
         {
           uid: doc._id,
           email: doc.email,
-          role: doc.roles,
+          roles: doc.roles,
         },
         secret,
         {

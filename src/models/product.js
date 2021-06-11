@@ -22,6 +22,7 @@ const productSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  __v: { type: Number, select: false },
 });
 
 module.exports = model('Product', productSchema);

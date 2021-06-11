@@ -17,6 +17,7 @@ const userSchema = new Schema({
       required: true,
     },
   },
+  __v: { type: Number, select: false },
 });
 
 // una función que realice comparaciones antes de realizar un guardado en la base de datos,
@@ -24,14 +25,37 @@ const userSchema = new Schema({
 userSchema.pre('save', function (next) {
   // verifica que si algún campo distinto a la contraseña
   // ha sido modificado entonces no será necesario hashear la contraseña
-  if (!this.isModified('password')) return next();
+  const user = this;
+  if (!user.isModified('password')) return next();
   // si por el contrasrio la contraseña si ha sido modificada o recién creada, se hasheará
-  bcrypt.hash(this.password, 10, (err, passwordHash) => {
+  bcrypt.hash(user.password, 10, (err, passwordHash) => {
     if (err) return next(err);
-    this.password = passwordHash;
+    user.password = passwordHash;
     next();
   });
 });
+
+userSchema.pre('findOneAndUpdate', function (next) {
+  const user = this;
+  if (!user._update.$set.password) return next();
+  bcrypt.hash(user._update.$set.password, 10, (err, passwordHash) => {
+    if (err) return next(err);
+    user._update.$set.password = passwordHash;
+    next();
+  });
+});
+
+/* userSchema.pre('findOneAndUpdate', async function (next) {
+  try {
+    if (this._update.password) {
+      const hashed = await bcrypt.hash(this._update.password, 10);
+      this._update.password = hashed;
+    }
+    next();
+  } catch (err) {
+    return next(err);
+  }
+}); */
 
 // necesitamos una función que nos ayude a comparar la
 // versión en texto plano que recibimos del cliente con la

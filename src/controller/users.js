@@ -4,16 +4,7 @@ const User = require('../models/user');
 const getUsers = async (req, res, next) => {
   try {
     const users = await User.find({});
-    const listUser = [];
-    users.forEach((user) => {
-      listUser.push({
-        _id: user._id,
-        email: user.email,
-        password: user.password,
-        roles: user.roles,
-      });
-    });
-    res.status(200).json(listUser);
+    res.status(200).json(users);
   } catch (err) {
     next(err);
   }
@@ -25,14 +16,7 @@ const getUsers = async (req, res, next) => {
 const getOneUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ _id: req.params.uid });
-    res.status(200).json(
-      {
-        _id: user._id,
-        email: user.email,
-        password: user.password,
-        roles: user.roles,
-      },
-    );
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
@@ -44,14 +28,7 @@ const newUser = async (req, res, next) => {
   try {
     const newUser = new User(req.body);
     const user = await newUser.save(newUser);
-    res.status(200).json(
-      {
-        _id: user._id,
-        email: user.email,
-        password: user.password,
-        roles: user.roles,
-      },
-    );
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
@@ -61,21 +38,12 @@ const newUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const user = await User.findById({ _id: req.params.uid });
-    user.email = req.body.email ? req.body.email : user.email;
-    user.password = req.body.password ? req.body.password : user.password;
-    user.roles = req.body.roles ? req.body.roles : user.roles;
-
-    const userSaved = await user.save({ validateBeforeSave: true });
-
-    res.status(200).json(
-      {
-        _id: user._id,
-        email: userSaved.email,
-        password: userSaved.password,
-        roles: userSaved.roles,
-      },
-    );
+    const userUpdate = await User.findOneAndUpdate(
+      { _id: req.params.uid },
+      { $set: req.body },
+      { new: true, useFindAndModify: false },
+    ); // .select('-__v');
+    res.status(200).json(userUpdate);
   } catch (err) {
     next(err);
   }

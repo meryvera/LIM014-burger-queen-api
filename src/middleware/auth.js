@@ -43,7 +43,7 @@ module.exports.isAuthenticated = (req) => (
 
 module.exports.isAdmin = (req) => (
   // TODO: decidir por la informacion del request si la usuaria es admin
-  req.authToken.role.admin
+  req.authToken.roles.admin
 
 );
 
