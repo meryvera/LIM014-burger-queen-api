@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 // definir el modelo de la base de datos
 const productSchema = new Schema({
+  __v: { type: Number, select: false },
   name: {
     type: String,
     required: true,
@@ -22,7 +23,7 @@ const productSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  __v: { type: Number, select: false },
+
 });
 
 module.exports = model('Product', productSchema);

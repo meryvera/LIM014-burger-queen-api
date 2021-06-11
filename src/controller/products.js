@@ -10,12 +10,11 @@ const getProducts = async (req, res, next) => {
   }
 };
 
-//   app.get('/products', requireAdmin, getProducts);
-// GET '/products/:uid'
+// GET '/products/:productId'
 
 const getOneProduct = async (req, res, next) => {
   try {
-    const product = await Product.findOne({ _id: req.params.uid });
+    const product = await Product.findOne({ _id: req.params.productId });
     res.status(200).json(product);
   } catch (err) {
     next(err);
@@ -27,14 +26,14 @@ const getOneProduct = async (req, res, next) => {
 const newProduct = async (req, res, next) => {
   try {
     const newProduct = new Product(req.body);
-    const product = await newProduct.save(newProduct).select('-__v');
+    const product = await newProduct.save(newProduct);
     res.status(200).json(product);
   } catch (err) {
     next(err);
   }
 };
 
-// PUT '/products/:uid'
+// PUT '/products/:productId'
 
 const updateProduct = async (req, res, next) => {
   try {
@@ -49,7 +48,7 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
-// DELETE '/products/:uid'
+// DELETE '/products/:productId'
 
 const deleteOneProduct = async (req, res, next) => {
   try {

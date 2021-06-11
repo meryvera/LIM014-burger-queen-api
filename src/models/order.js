@@ -2,6 +2,8 @@ const { Schema, model } = require('mongoose');
 
 // definir el modelo de la base de datos
 const orderSchema = new Schema({
+
+  __v: { type: Number, select: false },
   userId: {
     type: String,
     required: true,
@@ -33,7 +35,6 @@ const orderSchema = new Schema({
     type: Date,
     required: true,
   },
-  __v: { type: Number, select: false },
 });
 
 module.exports = model('Order', orderSchema);

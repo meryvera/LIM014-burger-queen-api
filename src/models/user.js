@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 
 // definir el modelo de la base de datos
 const userSchema = new Schema({
+
+  __v: { type: Number, select: false },
   email: {
     type: String,
     required: true,
@@ -17,7 +19,6 @@ const userSchema = new Schema({
       required: true,
     },
   },
-  __v: { type: Number, select: false },
 });
 
 // una función que realice comparaciones antes de realizar un guardado en la base de datos,

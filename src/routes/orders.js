@@ -2,6 +2,14 @@ const {
   requireAuth,
 } = require('../middleware/auth');
 
+const {
+  getOrders,
+  getOneOrder,
+  newOrder,
+  deleteOneOrder,
+  updateOrder,
+} = require('../controller/orders');
+
 /** @module orders */
 module.exports = (app, nextMain) => {
   /**
@@ -20,20 +28,19 @@ module.exports = (app, nextMain) => {
    * @response {String} orders[]._id Id
    * @response {String} orders[].userId Id usuaria que creó la orden
    * @response {String} orders[].client Clienta para quien se creó la orden
-   * @response {Array} orders[].products Productos
-   * @response {Object} orders[].products[] Producto
-   * @response {Number} orders[].products[].qty Cantidad
-   * @response {Object} orders[].products[].product Producto
+   * @response {Array} orders[].orders Orderos
+   * @response {Object} orders[].orders[] Ordero
+   * @response {Number} orders[].orders[].qty Cantidad
+   * @response {Object} orders[].orders[].order Ordero
    * @response {String} orders[].status Estado: `pending`, `canceled`, `delivering` o `delivered`
    * @response {Date} orders[].dateEntry Fecha de creación
    * @response {Date} [orders[].dateProcessed] Fecha de cambio de `status` a `delivered`
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/orders', requireAuth, (req, resp, next) => {
-  });
+  app.get('/orders', requireAuth, getOrders);
 
-  /**
+  /*  *
    * @name GET /orders/:orderId
    * @description Obtiene los datos de una orden especifico
    * @path {GET} /orders/:orderId
@@ -43,10 +50,10 @@ module.exports = (app, nextMain) => {
    * @response {String} order._id Id
    * @response {String} order.userId Id usuaria que creó la orden
    * @response {String} order.client Clienta para quien se creó la orden
-   * @response {Array} order.products Productos
-   * @response {Object} order.products[] Producto
-   * @response {Number} order.products[].qty Cantidad
-   * @response {Object} order.products[].product Producto
+   * @response {Array} order.orders Orderos
+   * @response {Object} order.orders[] Ordero
+   * @response {Number} order.orders[].qty Cantidad
+   * @response {Object} order.orders[].order Ordero
    * @response {String} order.status Estado: `pending`, `canceled`, `delivering` o `delivered`
    * @response {Date} order.dateEntry Fecha de creación
    * @response {Date} [order.dateProcessed] Fecha de cambio de `status` a `delivered`
@@ -54,8 +61,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orden con `orderId` indicado no existe
    */
-  app.get('/orders/:orderId', requireAuth, (req, resp, next) => {
-  });
+  app.get('/orders/:orderId', requireAuth, getOneOrder);
 
   /**
    * @name POST /orders
@@ -64,48 +70,47 @@ module.exports = (app, nextMain) => {
    * @auth Requiere `token` de autenticación
    * @body {String} userId Id usuaria que creó la orden
    * @body {String} client Clienta para quien se creó la orden
-   * @body {Array} products Productos
-   * @body {Object} products[] Producto
-   * @body {String} products[].productId Id de un producto
-   * @body {Number} products[].qty Cantidad de ese producto en la orden
+   * @body {Array} orders Orderos
+   * @body {Object} orders[] Ordero
+   * @body {String} orders[].orderId Id de un ordero
+   * @body {Number} orders[].qty Cantidad de ese ordero en la orden
    * @response {Object} order
    * @response {String} order._id Id
    * @response {String} order.userId Id usuaria que creó la orden
    * @response {String} order.client Clienta para quien se creó la orden
-   * @response {Array} order.products Productos
-   * @response {Object} order.products[] Producto
-   * @response {Number} order.products[].qty Cantidad
-   * @response {Object} order.products[].product Producto
+   * @response {Array} order.orders Orderos
+   * @response {Object} order.orders[] Ordero
+   * @response {Number} order.orders[].qty Cantidad
+   * @response {Object} order.orders[].order Ordero
    * @response {String} order.status Estado: `pending`, `canceled`, `delivering` o `delivered`
    * @response {Date} order.dateEntry Fecha de creación
    * @response {Date} [order.dateProcessed] Fecha de cambio de `status` a `delivered`
    * @code {200} si la autenticación es correcta
-   * @code {400} no se indica `userId` o se intenta crear una orden sin productos
+   * @code {400} no se indica `userId` o se intenta crear una orden sin orderos
    * @code {401} si no hay cabecera de autenticación
    */
-  app.post('/orders', requireAuth, (req, resp, next) => {
-  });
+  app.post('/orders', requireAuth, newOrder);
 
   /**
    * @name PUT /orders
    * @description Modifica una orden
-   * @path {PUT} /products
+   * @path {PUT} /orders
    * @params {String} :orderId `id` de la orden
    * @auth Requiere `token` de autenticación
    * @body {String} [userId] Id usuaria que creó la orden
    * @body {String} [client] Clienta para quien se creó la orden
-   * @body {Array} [products] Productos
-   * @body {Object} products[] Producto
-   * @body {String} products[].productId Id de un producto
-   * @body {Number} products[].qty Cantidad de ese producto en la orden
+   * @body {Array} [orders] Orderos
+   * @body {Object} orders[] Ordero
+   * @body {String} orders[].orderId Id de un ordero
+   * @body {Number} orders[].qty Cantidad de ese ordero en la orden
    * @body {String} [status] Estado: `pending`, `canceled`, `delivering` o `delivered`
    * @response {Object} order
    * @response {String} order._id Id
    * @response {String} order.userId Id usuaria que creó la orden
-   * @response {Array} order.products Productos
-   * @response {Object} order.products[] Producto
-   * @response {Number} order.products[].qty Cantidad
-   * @response {Object} order.products[].product Producto
+   * @response {Array} order.orders Orderos
+   * @response {Object} order.orders[] Ordero
+   * @response {Number} order.orders[].qty Cantidad
+   * @response {Object} order.orders[].order Ordero
    * @response {String} order.status Estado: `pending`, `canceled`, `delivering` o `delivered`
    * @response {Date} order.dateEntry Fecha de creación
    * @response {Date} [order.dateProcessed] Fecha de cambio de `status` a `delivered`
@@ -114,32 +119,30 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orderId con `orderId` indicado no existe
    */
-  app.put('/orders/:orderId', requireAuth, (req, resp, next) => {
-  });
+  app.put('/orders/:orderId', requireAuth, updateOrder);
 
   /**
    * @name DELETE /orders
    * @description Elimina una orden
    * @path {DELETE} /orders
-   * @params {String} :orderId `id` del producto
+   * @params {String} :orderId `id` del ordero
    * @auth Requiere `token` de autenticación
    * @response {Object} order
    * @response {String} order._id Id
    * @response {String} order.userId Id usuaria que creó la orden
    * @response {String} order.client Clienta para quien se creó la orden
-   * @response {Array} order.products Productos
-   * @response {Object} order.products[] Producto
-   * @response {Number} order.products[].qty Cantidad
-   * @response {Object} order.products[].product Producto
+   * @response {Array} order.orders Orderos
+   * @response {Object} order.orders[] Ordero
+   * @response {Number} order.orders[].qty Cantidad
+   * @response {Object} order.orders[].order Ordero
    * @response {String} order.status Estado: `pending`, `canceled`, `delivering` o `delivered`
    * @response {Date} order.dateEntry Fecha de creación
    * @response {Date} [order.dateProcessed] Fecha de cambio de `status` a `delivered`
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
-   * @code {404} si el producto con `orderId` indicado no existe
+   * @code {404} si el ordero con `orderId` indicado no existe
    */
-  app.delete('/orders/:orderId', requireAuth, (req, resp, next) => {
-  });
+  app.delete('/orders/:orderId', requireAuth, deleteOneOrder);
 
   nextMain();
 };
