@@ -27,7 +27,7 @@ const initAdminUser = (app, next) => {
     roles: { admin: true },
   };
 
-  // TODO: crear usuaria admin
+  // FINISH: crear usuaria admin
 
   const userFind = User.findOne({ email: adminEmail });
 

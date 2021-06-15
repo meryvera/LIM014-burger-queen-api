@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 // definir el modelo de la base de datos
 const productSchema = new Schema({
@@ -25,5 +26,7 @@ const productSchema = new Schema({
   },
 
 });
+
+productSchema.plugin(mongoosePaginate);
 
 module.exports = model('Product', productSchema);

@@ -12,7 +12,7 @@ module.exports.authenthicateUser = (req, res, next) => {
     return next(400);
   }
 
-  // TODO: autenticar a la usuarix
+  // FINISH: autenticar a la usuarix
   const userFind = User.findOne({ email });
 
   userFind.then((doc) => {

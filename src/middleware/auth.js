@@ -20,7 +20,7 @@ module.exports = (secret) => (req, resp, next) => {
       return next(403);
     }
 
-    // TODO: Verificar identidad del usuario usando `decodeToken.uid`
+    // FINISH: Verificar identidad del usuario usando `decodeToken.uid`
     const userFind = User.findById(decodedToken.uid);
 
     userFind.then((doc) => {
@@ -38,11 +38,11 @@ module.exports = (secret) => (req, resp, next) => {
 module.exports.isAuthenticated = (req) => (
   // console.info('isadmin', req.authToken)
   req.authToken.uid
-  // TODO: decidir por la informacion del request si la usuaria esta autenticada
+  // FINISH: decidir por la informacion del request si la usuaria esta autenticada
 );
 
 module.exports.isAdmin = (req) => (
-  // TODO: decidir por la informacion del request si la usuaria es admin
+  // FINISH: decidir por la informacion del request si la usuaria es admin
   req.authToken.roles.admin
 
 );

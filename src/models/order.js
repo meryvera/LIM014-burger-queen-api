@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 // definir el modelo de la base de datos
 const orderSchema = new Schema({
 
@@ -12,15 +14,15 @@ const orderSchema = new Schema({
     type: String,
     required: true,
   },
-  product: [{
+  products: [{
     qty: {
       type: Number,
       required: true,
     },
     product: {
       type: Schema.Types.ObjectId,
-      required: true,
       ref: 'Product',
+      required: true,
     },
   }],
   status: {
@@ -33,8 +35,10 @@ const orderSchema = new Schema({
   },
   dateProcessed: {
     type: Date,
-    required: true,
+    required: false,
   },
 });
+
+orderSchema.plugin(mongoosePaginate);
 
 module.exports = model('Order', orderSchema);

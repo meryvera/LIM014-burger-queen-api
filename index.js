@@ -9,7 +9,6 @@ const pkg = require('./package.json');
 const { port, dbUrl, secret } = config;
 const app = express();
 
-// TODO: Conexión a la Base de Datos (MongoDB o MySQL)
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

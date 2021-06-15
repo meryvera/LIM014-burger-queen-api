@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 // definir el modelo de la base de datos
 const userSchema = new Schema({
 
@@ -73,5 +75,7 @@ userSchema.methods.comparePassword = (password, cb) => {
     return cb(null, this);
   });
 };
+
+userSchema.plugin(mongoosePaginate);
 
 module.exports = model('User', userSchema);

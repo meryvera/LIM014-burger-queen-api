@@ -3,7 +3,11 @@ const Order = require('../models/order');
 // GET '/orders'
 const getOrders = async (req, res, next) => {
   try {
-    const orders = await Order.find({});
+    const options = {
+      page: parseInt(req.query.page, 10) || 10,
+      limit: parseInt(req.query.limit, 10) || 10,
+    };
+    const orders = await Order.paginate({}, options);
     res.status(200).json(orders);
   } catch (err) {
     next(err);
@@ -11,7 +15,6 @@ const getOrders = async (req, res, next) => {
 };
 
 // GET '/orders/:orderId'
-
 const getOneOrder = async (req, res, next) => {
   try {
     const order = await Order.findOne({ _id: req.params.orderId });
@@ -27,7 +30,14 @@ const newOrder = async (req, res, next) => {
   try {
     const newOrder = new Order(req.body);
     const order = await newOrder.save(newOrder);
-    res.status(200).json(order);
+    const orderUpdate = await Order.find({ _id: order._id }).populate('products.product');
+    /*     const orderUpdate = await Order.findByIdAndUpdate(
+      order._id,
+      { $push: { product: req.body.products.product } },
+      { new: true, useFindAndModify: false },
+    ); */
+    console.log(orderUpdate);
+    res.status(200).json(orderUpdate);
   } catch (err) {
     next(err);
   }
