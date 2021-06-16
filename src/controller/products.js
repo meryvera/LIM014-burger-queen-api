@@ -1,4 +1,5 @@
 const Product = require('../models/product');
+const { pagination } = require('../utils/pagination');
 
 // GET '/products'
 const getProducts = async (req, res, next) => {
@@ -8,6 +9,11 @@ const getProducts = async (req, res, next) => {
       limit: parseInt(req.query.limit, 10) || 10,
     };
     const products = await Product.paginate({}, options);
+
+    const url = `${req.protocol}://${req.get('host') + req.path}`;
+    const links = pagination(products, url, options.page, options.limit, products.totalPages);
+
+    res.links(links);
     res.status(200).json(products);
   } catch (err) {
     next(err);
@@ -30,7 +36,8 @@ const getOneProduct = async (req, res, next) => {
 const newProduct = async (req, res, next) => {
   try {
     const newProduct = new Product(req.body);
-    const product = await newProduct.save(newProduct);
+    const productSaved = await newProduct.save(newProduct);
+    const product = await Product.findOne({ _id: productSaved._id });
     res.status(200).json(product);
   } catch (err) {
     next(err);

@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose');
 
 const mongoosePaginate = require('mongoose-paginate-v2');
 
+const statusOrder = {
+  values: ['PENDING', 'DELIVERED', 'CANCELED', 'DELIVERING'],
+  message: '`{VALUE}` is not a valid status. Insert: PENDING, DELIVERED, CANCELED, DELIVERING',
+};
 // definir el modelo de la base de datos
 const orderSchema = new Schema({
 
@@ -26,6 +30,7 @@ const orderSchema = new Schema({
     },
   }],
   status: {
+    enum: statusOrder,
     type: String,
     required: true,
   },

@@ -1,13 +1,20 @@
 const Order = require('../models/order');
+const { pagination } = require('../utils/pagination');
 
 // GET '/orders'
 const getOrders = async (req, res, next) => {
   try {
     const options = {
+      populate: 'products.product',
       page: parseInt(req.query.page, 10) || 10,
       limit: parseInt(req.query.limit, 10) || 10,
     };
     const orders = await Order.paginate({}, options);
+
+    const url = `${req.protocol}://${req.get('host') + req.path}`;
+    const links = pagination(orders, url, options.page, options.limit, orders.totalPages);
+
+    res.links(links);
     res.status(200).json(orders);
   } catch (err) {
     next(err);
@@ -28,15 +35,12 @@ const getOneOrder = async (req, res, next) => {
 
 const newOrder = async (req, res, next) => {
   try {
+    req.body.status = req.body.status.toUpperCase();
     const newOrder = new Order(req.body);
+
     const order = await newOrder.save(newOrder);
     const orderUpdate = await Order.find({ _id: order._id }).populate('products.product');
-    /*     const orderUpdate = await Order.findByIdAndUpdate(
-      order._id,
-      { $push: { product: req.body.products.product } },
-      { new: true, useFindAndModify: false },
-    ); */
-    console.log(orderUpdate);
+
     res.status(200).json(orderUpdate);
   } catch (err) {
     next(err);

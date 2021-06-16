@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const { pagination } = require('../utils/pagination');
 
 // GET '/users'
 const getUsers = async (req, res, next) => {
@@ -9,25 +10,13 @@ const getUsers = async (req, res, next) => {
     };
     const users = await User.paginate({}, options);
 
-    const linkHeader = {
-      first: `http://localhost:8081/users?limit=${options.limit}&page=1`,
-      prev: users.hasPrevPage ? `http://localhost:8081/users?limit=${options.limit}&page=${options.page - 1}` : false,
-      next: users.hasNextPage ? `http://localhost:8081/users?limit=${options.limit}&page=${options.page + 1}` : false,
-      last: users.totalPages ? `http://localhost:8081/users?limit=${options.limit}&page=${users.totalPages}` : false,
-    };
+    console.info(req.protocol);
+    console.info(req.get('host'));
 
-    const obj = Object.entries(linkHeader);
+    const url = `${req.protocol}://${req.get('host') + req.originalUrl}`;
+    const links = pagination(users, url, options.page, options.limit, users.totalPages);
 
-    const links = [];
-
-    obj.forEach((e) => {
-      if (e !== false && e !== undefined) {
-        links.push(e);
-      }
-    });
-
-    // const
-    res.set('link', links);
+    res.links(links);
     res.status(200).json(users);
   } catch (err) {
     next(err);
@@ -59,7 +48,9 @@ const newUser = async (req, res, next) => {
     }
 
     const newUser = new User(req.body);
-    const user = await newUser.save(newUser);
+    const userSaved = await newUser.save(newUser);
+    const user = await User.findOne({ _id: userSaved._id });
+
     res.status(200).json(user);
   } catch (err) {
     next(err);

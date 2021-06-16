@@ -9,11 +9,18 @@ const userSchema = new Schema({
   __v: { type: Number, select: false },
   email: {
     type: String,
+    match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
+    trim: true,
+    unique: true,
     required: true,
   },
   password: {
     type: String,
     required: true,
+    trim: true,
+    minlength: 8,
+    maxlength: 16,
+
   },
   roles: {
     admin: {
