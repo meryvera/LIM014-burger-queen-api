@@ -4,7 +4,6 @@ const nodeFetch = require('node-fetch');
 const kill = require('tree-kill');
 
 const mongoSetup = require('@shelf/jest-mongodb/setup');
-const MongodbMemoryServer = require('mongodb-memory-server').default;
 
 const config = require('../config');
 
@@ -21,7 +20,7 @@ const __e2e = {
   adminToken: null,
   testUserCredentials: {
     email: 'test@test.test',
-    password: '123456',
+    password: '12345678945',
   },
   testUserToken: null,
   childProcessPid: null,
@@ -109,11 +108,10 @@ module.exports = () => new Promise((resolve, reject) => {
   }
 
   // TODO: Configurar DB de tests
-  global.__MONGOD__ = MongodbMemoryServer;
 
   mongoSetup().then(() => {
     console.info('Staring local server...');
-    const child = spawn('npm', ['start', process.env.PORT || 8888], {
+    const child = spawn('node', ['index.js', process.env.PORT || 8888], {
       cwd: path.resolve(__dirname, '../'),
       stdio: ['ignore', 'pipe', 'pipe'],
     });
