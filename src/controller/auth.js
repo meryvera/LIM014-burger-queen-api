@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 const { secret } = config;
 
-module.exports.authenthicateUser = (req, res, next) => {
+module.exports.authenthicateUser = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {

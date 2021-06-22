@@ -23,27 +23,28 @@ module.exports = (secret) => (req, resp, next) => {
     // FINISH: Verificar identidad del usuario usando `decodeToken.uid`
     const userFind = User.findById(decodedToken.uid);
 
-    userFind.then((doc) => {
-      if (doc) {
+    userFind
+      .then((doc) => {
+        if (!doc) {
+          return next(404);
+        }
         req.authToken = decodedToken;
-        console.info('AUTHTOKEN ', req.authToken);
-        return next();
-      }
 
-      console.info('El usuario del token es inválido');
-    });
+        return next();
+      })
+      .catch(() => next(403));
   });
 };
 
 module.exports.isAuthenticated = (req) => (
   // console.info('isadmin', req.authToken)
-  req.authToken.uid
+  req.authToken || false
   // FINISH: decidir por la informacion del request si la usuaria esta autenticada
 );
 
 module.exports.isAdmin = (req) => (
   // FINISH: decidir por la informacion del request si la usuaria es admin
-  req.authToken.roles.admin
+  req.authToken.roles.admin || false
 
 );
 

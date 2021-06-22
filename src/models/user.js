@@ -18,9 +18,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    minlength: 8,
-    maxlength: 16,
-
   },
   roles: {
     admin: {
@@ -54,24 +51,9 @@ userSchema.pre('findOneAndUpdate', function (next) {
   });
 });
 
-/* userSchema.pre('findOneAndUpdate', async function (next) {
-  try {
-    if (this._update.password) {
-      const hashed = await bcrypt.hash(this._update.password, 10);
-      this._update.password = hashed;
-    }
-    next();
-  } catch (err) {
-    return next(err);
-  }
-}); */
-
-// necesitamos una función que nos ayude a comparar la
-// versión en texto plano que recibimos del cliente con la
-// versión encyptada que tenemos guardada en la base de datos
-userSchema.methods.comparePassword = (password, cb) => {
+/* userSchema.methods.comparePassword = (password, cb) => {
   // bcrypt.compartePassword(contraseñaenlaBD, contraseñaenelcliente, callback)
-  bcrypt.comparePassword(password, this.password, (err, isMatch) => {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
     // si ocurre un error retorna un cb
     if (err) return cb(err);
     // si las contraseña no coiciden, retorna un null en el argumento del error y isMatch
@@ -80,6 +62,22 @@ userSchema.methods.comparePassword = (password, cb) => {
     // con null en el apartado del error y this (el modelo user) como argumentos.
     return cb(null, this);
   });
+}; */
+
+// necesitamos una función que nos ayude a comparar la
+// versión en texto plano que recibimos del cliente con la
+// versión encyptada que tenemos guardada en la base de datos
+
+userSchema.methods.comparePassword = async (password, dbPassword) => {
+  try {
+    const match = await bcrypt.compare(password, dbPassword);
+    if (!match) {
+      throw new Error('Authentication error');
+    }
+    return match;
+  } catch (error) {
+    throw new Error('Wrong password.');
+  }
 };
 
 userSchema.plugin(mongoosePaginate);

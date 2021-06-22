@@ -8,3 +8,13 @@ module.exports.pagination = (response, url, page, limit, totalPages) => {
 
   return linkHeader;
 };
+
+module.exports.validateUser = (params) => {
+  const checkForValidMongoDbID = new RegExp('^[0-9a-fA-F]{24}$');
+  const validObjectId = checkForValidMongoDbID.test(params);
+
+  if (validObjectId) {
+    return { _id: params };
+  }
+  return { email: params };
+};

@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-const { pagination } = require('../utils/pagination');
+const { pagination } = require('../utils/utils');
 
 // GET '/products'
 const getProducts = async (req, res, next) => {

@@ -1,5 +1,5 @@
 const Order = require('../models/order');
-const { pagination } = require('../utils/pagination');
+const { pagination } = require('../utils/utils');
 
 // GET '/orders'
 const getOrders = async (req, res, next) => {
@@ -43,7 +43,7 @@ const newOrder = async (req, res, next) => {
 
     res.status(200).json(orderUpdate);
   } catch (err) {
-    next(err);
+    next(400);
   }
 };
 

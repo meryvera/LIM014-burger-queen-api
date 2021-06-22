@@ -1,23 +1,22 @@
 const User = require('../models/user');
-const { pagination } = require('../utils/pagination');
+const { pagination, validateUser } = require('../utils/utils');
+const { isAdmin } = require('../middleware/auth');
 
 // GET '/users'
 const getUsers = async (req, res, next) => {
   try {
     const options = {
-      page: parseInt(req.query.page, 10) || 10,
+      page: parseInt(req.query.page, 10) || 1,
       limit: parseInt(req.query.limit, 10) || 10,
     };
     const users = await User.paginate({}, options);
 
-    console.info(req.protocol);
-    console.info(req.get('host'));
+    const url = `${req.protocol}://${req.get('host') + req.path}`;
 
-    const url = `${req.protocol}://${req.get('host') + req.originalUrl}`;
     const links = pagination(users, url, options.page, options.limit, users.totalPages);
 
     res.links(links);
-    res.status(200).json(users);
+    res.status(200).json(users.docs);
   } catch (err) {
     next(err);
   }
@@ -28,10 +27,20 @@ const getUsers = async (req, res, next) => {
 
 const getOneUser = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.params.uid });
-    res.status(200).json(user);
+    console.log('HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+    console.log(req.authToken);
+    const { uid } = req.params;
+    const value = validateUser(uid);
+    const user = await User.findOne(value).lean();
+    if (!user) {
+      return next(404);
+    }
+
+    if (req.authToken.uid === user._id.toString() || isAdmin(req)) return res.json(user);
+    return next(403);
   } catch (err) {
-    next(err);
+    console.log(err);
+    return next(err);
   }
 };
 
@@ -53,6 +62,7 @@ const newUser = async (req, res, next) => {
 
     res.status(200).json(user);
   } catch (err) {
+    console.info(err);
     next(err);
   }
 };
