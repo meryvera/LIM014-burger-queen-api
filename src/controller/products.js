@@ -1,5 +1,6 @@
 const Product = require('../models/product');
-const { pagination, isObjectId, isAdmin } = require('../utils/utils');
+const { pagination, isObjectId } = require('../utils/utils');
+const { isAdmin } = require('../middleware/auth');
 
 // GET '/products'
 const getProducts = async (req, res, next) => {
@@ -10,14 +11,12 @@ const getProducts = async (req, res, next) => {
       limit: parseInt(req.query.limit, 10) || 10,
     };
     const products = await Product.paginate({}, options);
-    console.log(products);
 
     const links = pagination(products, url, options.page, options.limit, products.totalPages);
 
     res.links(links);
     return res.status(200).json(products.docs);
   } catch (err) {
-    console.log('hi');
     next(err);
   }
 };
@@ -26,14 +25,12 @@ const getProducts = async (req, res, next) => {
 
 const getOneProduct = async (req, res, next) => {
   try {
-    console.log('HOLA TRY');
     const { productId } = req.params;
 
     if (!isObjectId(productId)) return next(404);
 
     const product = await Product.findOne({ _id: productId });
     if (!product) return next(404);
-    console.log(product);
     return res.status(200).json(product);
   } catch (err) {
     return next(err);
@@ -60,7 +57,13 @@ const newProduct = async (req, res, next) => {
 // PUT '/products/:productId'
 
 const updateProduct = async (req, res, next) => {
+  const {
+    price,
+  } = req.body;
   try {
+    if (!isAdmin(req)) return next(403);
+    if (typeof (price) !== 'number') return next(400);
+
     const productUpdate = await Product.findOneAndUpdate(
       { _id: req.params.productId },
       { $set: req.body },
@@ -68,7 +71,7 @@ const updateProduct = async (req, res, next) => {
     ); // .select('-__v');
     res.status(200).json(productUpdate);
   } catch (err) {
-    next(err);
+    next(404);
   }
 };
 
@@ -76,6 +79,8 @@ const updateProduct = async (req, res, next) => {
 
 const deleteOneProduct = async (req, res, next) => {
   try {
+    if (!isAdmin(req)) return next(403);
+
     const productDeleted = await Product.findOne({ _id: req.params.productId });
     await Product.findByIdAndDelete({ _id: req.params.productId });
     if (productDeleted) {
@@ -83,7 +88,7 @@ const deleteOneProduct = async (req, res, next) => {
     }
     res.status(400).json({ message: 'Producto a eliminar no existe' });
   } catch (err) {
-    next(err);
+    next(404);
   }
 };
 

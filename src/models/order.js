@@ -21,18 +21,16 @@ const orderSchema = new Schema({
   products: [{
     qty: {
       type: Number,
-      required: true,
     },
     product: {
       type: Schema.Types.ObjectId,
       ref: 'Product',
-      required: true,
     },
   }],
   status: {
-    enum: statusOrder,
     type: String,
     required: true,
+    default: 'pending',
   },
   dateEntry: {
     type: Date,
@@ -41,6 +39,7 @@ const orderSchema = new Schema({
   dateProcessed: {
     type: Date,
     required: false,
+    default: Date.now,
   },
 });
 

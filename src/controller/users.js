@@ -18,7 +18,7 @@ const getUsers = async (req, res, next) => {
     const links = pagination(users, url, options.page, options.limit, users.totalPages);
 
     res.links(links);
-    res.status(200).json(users.docs);
+    return res.status(200).json(users.docs);
   } catch (err) {
     next(err);
   }
