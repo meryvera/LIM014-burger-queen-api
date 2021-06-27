@@ -23,11 +23,11 @@ module.exports.authenthicateUser = async (req, res, next) => {
     }
     bcrypt.compare(password, doc.password, (err, data) => {
       // if error than throw error
-      if (err) throw err;
+      if (err) console.info(err);
 
       // if both match than you can do anything
       else if (!data) {
-        return res.status(400).json({
+        return res.status(404).json({
           message: 'Incorrect Password !',
         });
       }
@@ -43,10 +43,9 @@ module.exports.authenthicateUser = async (req, res, next) => {
           expiresIn: 3600,
         },
         (err, token) => {
-          if (err) throw err;
-          return res.status(200).json({
-            token,
-          });
+          if (err) console.error(err);
+
+          return res.status(200).json({ token });
         },
       );
     });

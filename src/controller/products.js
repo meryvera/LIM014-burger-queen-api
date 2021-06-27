@@ -1,21 +1,23 @@
 const Product = require('../models/product');
-const { pagination } = require('../utils/utils');
+const { pagination, isObjectId, isAdmin } = require('../utils/utils');
 
 // GET '/products'
 const getProducts = async (req, res, next) => {
   try {
+    const url = `${req.protocol}://${req.get('host') + req.path}`;
     const options = {
-      page: parseInt(req.query.page, 10) || 10,
+      page: parseInt(req.query.page, 10) || 1,
       limit: parseInt(req.query.limit, 10) || 10,
     };
     const products = await Product.paginate({}, options);
+    console.log(products);
 
-    const url = `${req.protocol}://${req.get('host') + req.path}`;
     const links = pagination(products, url, options.page, options.limit, products.totalPages);
 
     res.links(links);
-    res.status(200).json(products);
+    return res.status(200).json(products.docs);
   } catch (err) {
+    console.log('hi');
     next(err);
   }
 };
@@ -24,10 +26,17 @@ const getProducts = async (req, res, next) => {
 
 const getOneProduct = async (req, res, next) => {
   try {
-    const product = await Product.findOne({ _id: req.params.productId });
+    console.log('HOLA TRY');
+    const { productId } = req.params;
+
+    if (!isObjectId(productId)) return next(404);
+
+    const product = await Product.findOne({ _id: productId });
+    if (!product) return next(404);
+    console.log(product);
     return res.status(200).json(product);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -35,6 +44,10 @@ const getOneProduct = async (req, res, next) => {
 
 const newProduct = async (req, res, next) => {
   try {
+    const { name, price } = req.body;
+
+    if (Object.entries(req.body).length === 0) return next(400);
+
     const newProduct = new Product(req.body);
     const productSaved = await newProduct.save(newProduct);
     const product = await Product.findOne({ _id: productSaved._id });

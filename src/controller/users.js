@@ -68,7 +68,6 @@ const newUser = async (req, res, next) => {
     const user = await User.findOne({ _id: userSaved._id }).select('-password');
     return res.status(200).json(user);
   } catch (err) {
-    console.info(err);
     next(err);
   }
 };
@@ -78,44 +77,30 @@ const newUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const { uid } = req.params;
-    console.log(req.body);
+    const { body } = req;
 
     const value = validateUser(uid);
+
     const user = await User.findOne(value);
 
-    const userId = user._id.toString() || '';
-
-    console.log(req.authToken.uid !== userId);
-    console.log(isAdmin(req));
-    console.info('LINEA 1', req.body);
-    console.info(req.authToken);
-
-    if (req.authToken.uid !== userId && !isAdmin(req)) return next(403);
-    console.info('LINEA 1-2', req.body);
-
-    console.log(!isAdmin(req));
-    console.log(!isAdmin(req) && user.roles);
-
-    if (!isAdmin(req) && user.roles) return next(403);
-
-    console.info('LINEA 2', req.body);
-    console.info(req.authToken);
-    if (Object.keys(req.body).length === 0) return next(403);
-
-    console.info('LINEA 3', req.body);
-    console.info(req.authToken);
     if (!user) return next(404);
 
+    if (req.authToken.uid !== user._id.toString() && !isAdmin(req)) return next(403);
+    if (!isAdmin(req) && body.roles) return next(403);
+    if (Object.entries(body).length === 0) return next(400);
+
+    if (body.password && isAWeakPassword(body.password)) return next(400);
+
+    if (body.email && !isAValidEmail(body.email)) return next(400);
+
     const userUpdate = await User.findOneAndUpdate(
-      { value },
-      { $set: req.body },
+      value,
+      { $set: body },
       { new: true, useFindAndModify: false },
     ); // .select('-__v');
 
-    return res.status(200).json(userUpdate);
+    return res.status(200).send(userUpdate);
   } catch (err) {
-    console.info('LINEA 4', req.body);
-    console.info(req.authToken);
     next(404);
   }
 };
@@ -128,15 +113,13 @@ const deleteOneUser = async (req, res, next) => {
     const value = validateUser(uid);
     const userDeleted = await User.findOne(value);
 
-    const userId = userDeleted._id || '';
-
     if (!userDeleted) return next(404);
 
-    if (req.authToken.uid !== userId || !isAdmin(req)) return next(403);
+    if (req.authToken.uid !== userDeleted._id.toString() && !isAdmin(req)) return next(403);
 
-    await User.findByIdAndDelete({ _id: req.params.uid });
+    await User.findOneAndDelete(value);
 
-    res.status(200).json(userDeleted);
+    return res.status(200).send(userDeleted);
   } catch (err) {
     next(404);
   }
