@@ -15,7 +15,7 @@ mongoose.connect(dbUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.info('Conectado'))
+  .then((db) => console.info(db.connections))
   .catch((error) => console.info(error));
 
 app.set('config', config);
