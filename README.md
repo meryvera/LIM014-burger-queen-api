@@ -20,151 +20,7 @@ a la cocina para que se preparen ordenada y eficientemente.
 
 Este proyecto tiene dos áreas: interfaz web (cliente) y API (servidor). Nuestra
 clienta nos ha solicitado desarrollar la API que se debe integra con la
-interfaz, que otro equipo de desarrolladoras está trabajando simultáneamente.
-
-## 2. Resumen del proyecto
-
-Con una API en este caso nos referimos a un _servidor web_, que es
-básicamente un programa que _escucha_ en un puerto de red, a través del cual
-podemos enviarle _consultas_ (_request_) y obtener _respuestas_ (_response_)
-usando el protocolo HTTP (o HTTPS).
-
-Un servidor web debe _manejar_ consultas entrantes y producir respuestas a esas
-consultas que serán enviadas de vuelta al _cliente_. Cuando hablamos de
-_aplicaciones de servidor_, esto implica una arquitectura de _cliente/servidor_,
-donde el cliente es un programa que hace consultas a través de una red (por
-ejemplo el navegador, cURL, ...), y el _servidor_ es el programa que recibe
-estas consultas y las responde.
-
-[Node.js](https://nodejs.org/) nos permite crear servidores web súper eficientes
-de manera relativamente simple y todo esto usando JavaScript!
-
-En este proyecto partimos de un _boilerplate_ que ya contiene una serie de
-_endpoints_ (puntos de conexión o URLs) y nos piden completar la aplicación.
-Esto implica que tendremos que partir por leer la implementación existente, y
-familiarizarnos con el _stack_ elegido ([Node.js](https://nodejs.org/) y
-[Express](https://expressjs.com/)) y complementarlo con un motor de bases de
-datos, el cual tu deberás elegir entre [MongoDB](https://www.mongodb.com/),
-
-
-La clienta nos ha dado un [link a la documentación](https://laboratoria.github.io/burger-queen-api/)
-que especifica el comportamiento esperado de la API que expondremos por
-HTTP.  Ahí puedes encontrar todos los detalles de qué _endpoints_ debe
-implementar  la aplicación, qué parámetros esperan, qué deben responder, etc.
-
-## 3. Objetivos de aprendizaje
-
-El objetivo principal de aprendizaje es adquirir experiencia con **Node.js**
-como herramienta para desarrollar _aplicaciones de servidor_, junto con una
-serie de herramientas comunes usadas en este tipo de contexto (Express como
-framework, MongoDB como base datos, contenedores de docker,
-etc).
-
-En este proyecto tendrás que construir un servidor web que debe _servir_ `JSON`
-sobre `HTTP`, y desplegarlo en un servidor en la nube.
-
-Para completar el proyecto tendrás que familiarizarte con conceptos como
-**rutas** (_routes_), **URLs**, **HTTP** y **REST** (verbs, request, response,
-headers, body, status codes...), **JSON**, **JWT** (_JSON Web Tokens_),
-**conexión con una base datos** (`MongoDB`),
-**variables de entorno**, **deployment**, **contenedores de `docker`**...
-
-### Node
-
-* [ ] Instalar y usar módulos. ([npm](https://www.npmjs.com/))
-* [ ] [Configuración de package.json.](https://docs.npmjs.com/files/package.json)
-* [ ] [Configuración de npm-scripts](https://docs.npmjs.com/misc/scripts)
-
-### Testing
-
-* [ ] [Testeo unitario.](https://jestjs.io/docs/es-ES/getting-started)
-* [ ] [Testeo asíncrono.](https://jestjs.io/docs/es-ES/asynchronous)
-* [ ] Tests de integración.
-
-### Estructura del código y guía de estilo
-
-* [ ] Organizar y dividir el código en módulos (Modularización)
-* [ ] Uso de identificadores descriptivos (Nomenclatura | Semántica)
-* [ ] Uso de linter (ESLINT)
-
-### Git y GitHub
-
-* [ ] Uso de comandos de git (add | commit | pull | status | push)
-* [ ] Manejo de repositorios de GitHub (clone | fork | gh-pages)
-* [ ] Colaboración en Github (branches | pull requests | |tags)
-* [ ] Organización en Github (projects | issues | labels | milestones)
-
-### Express
-
-* [ ] Rutas.
-* [ ] `middlewares`
-
-### HTTP
-
-* [ ] [Request, Response.](https://developer.mozilla.org/es/docs/Web/HTTP/Messages)
-* [ ] Headers.
-* [ ] Body.
-* [ ] [Verbos HTTP.](https://developer.mozilla.org/es/docs/Web/HTTP/Methods)
-* [ ] [Codigos de status de HTTP.](https://dev.to/khaosdoctor/the-complete-guide-to-status-codes-for-meaningful-rest-apis-1-5c5)
-* [ ] Encodings y `JSON`.
-* [ ] [CORS.](https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS)
-
-### Autenticación
-
-* [ ] `JWT`
-* [ ] Almacenamiento y acceso de contraseñas.
-
-### WebOps
-
-* [ ] Variables de entorno.
-* [ ] Contenedores (Docker).
-* [ ] Docker compose.
-
-### Base de datos (MongoDB)
-
-* [ ] Instalación.
-* [ ] Conexión a través de cliente.
-* [ ] Connection string.
-* [ ] Queries y comandos (creación, lectura, actualización, eliminación)
-
-## 4. Consideraciones generales
-
-Este proyecto se realizará en duos y deberá integrarse con el proyecto
-[Burger Queen API client](../04-burger-queen-api-client)
-que desarrolle simultáneamente el equipo de Frontend developers de tu squad.
-
-La lógica del proyecto debe estar implementada completamente en JavaScript (ES6).
-En este proyecto está permitido usar librerías o frameworks, asi como
-extensiones al lenguaje con `babel` (caso en el cual deberás incluir un
-comando `npm run build`).
-
-Los tests deben cubrir un mínimo del 90% de _statements_, _functions_,
-_lines_ y _branches_. Si bien el boilerplate no incluye la configuración para
-pruebas unitarias, estas son obligatorias.
-
-Otro requerimiento del equipo de QA de nuestra clienta es realizar
-**pruebas _end-to-end_**, que usaremos para verificar el comportamiento desde el
-punto de vista de HTTP, desde afuera del servidor. Estos tests, a diferencia de
-las pruebas unitarias, no prueban cada pieza por separado sino que prueban la
-aplicación completa, de principio a fin. Estas pruebas, al no hacer uso directo
-del código fuente de la aplicación, pueden ejecutarse directamente sobre una URL
-remota, ya que la interfaz sometida a pruebas es HTTP.
-
-El _boilerplate_ ya contiene el setup y configuración
-necesaria para ejecutar todos los tests _end-to-end_ con el comando `npm run test:e2e`.
-
-```sh
-# Corre pruebas e2e sobre instancia local. Esto levanta la aplicación con npm
-# start y corre los tests contra la URL de esta instancia (por defecto
-# http://127.0.0.1:8080).
-npm run test:e2e
-
-# Corre pruebas e2e sobre URL remota
-REMOTE_URL=<TODO: poner URL> npm run test:e2e
-```
-
-Las pruebas _end-to-end_ ya están completas en el _boilerplate_, así que puedes
-usarlas como guía de implementación y checklist de completitud.
+interfaz, que otro equipo de desarrolladoras está trabajando simultáneamente. 
 
 ## 5. Criterios de aceptación mínimos del proyecto
 
@@ -172,39 +28,7 @@ usarlas como guía de implementación y checklist de completitud.
 
 Según lo establecido por la [documentación](https://laboratoria.github.io/burger-queen-api/)
 entregada por nuestra clienta, la API debe exponer los siguientes endpoints:
-
-#### 5.1,1 `/`
-
-* `GET /`
-
-#### 5.1.2 `/auth`
-
-* `POST /auth`
-
-#### 5.1.3 `/users`
-
-* `GET /users`
-* `GET /users/:uid`
-* `POST /users`
-* `PUT /users/:uid`
-* `DELETE /users/:uid`
-
-#### 5.1.4 `/products`
-
-* `GET /products`
-* `GET /products/:productid`
-* `POST /products`
-* `PUT /products/:productid`
-* `DELETE /products/:productid`
-
-#### 5.1.5 `/orders`
-
-* `GET /orders`
-* `GET /orders/:orderId`
-* `POST /orders`
-* `PUT /orders/:orderId`
-* `DELETE /orders/:orderId`
-
+ 
 ### 5.2 CLI
 
 La clienta nos ha solicitado que la aplicación cuente un comando **`npm start`**
@@ -226,111 +50,559 @@ argumento a la hora de invocar nuestro programa:
 # Arranca la aplicación el puerto 8888 usando npm
 npm start 8888
 ```
+  
 
-#### 5.2.2 Variables de entorno
+### 5.1 `/` - EJEMPLOS DE PETICIONES Y RESPUESTA
 
-Nuestra aplicación usa las siguientes variables de entorno:
 
-* `PORT`: Si no se ha especificado un puerto como argumento de lína de comando,
-  podemos usar la variable de entorno `PORT` para especificar el puerto. Valor
-  por defecto `8080`.
-* `DB_URL`: El _string_ de conexión de _MongoDB_ . Cuando ejecutemos la
-  aplicación en nuestra computadora (en entorno de desarrollo), podemos usar el
-  una base de datos local, pero en producción deberemos utilizar las instancias
-  configuradas con `docker-compose` (mas sobre esto en la siguiente sección de
-  **Deployment**)
-* `JWT_SECRET`: Nuestra aplicación implementa autenticación usando JWT (JSON
-   Web Tokens). Para poder firmar (cifrar) y verificar (descifrar) los tokens,
-  nuestra aplicación necesita un secreto. En local puedes usar el valor por
-  defecto (`xxxxxxxx`), pero es muy importante que uses un _secreto_ de verdad
-  en producción.
-* `ADMIN_EMAIL`: Opcionalmente podemos especificar un email y password para
-  el usuario admin (root). Si estos detalles están presentes la aplicación se
-  asegurará que exista el usuario y que tenga permisos de administrador. Valor
-  por defecto `admin@localhost`.
-* `ADMIN_PASSWORD`: Si hemos especificado un `ADMIN_EMAIL`, debemos pasar
-  también una contraseña para el usuario admin. Valor por defecto: `changeme`.
+#### 5.1.2 `/auth`
 
-### 5.3 Despliegue (Deployment)
 
-Nuestra clienta nos ha manifestado que su equipo de _devops_ está siempre con
-muchas tareas, por por lo que nos pide como requerimiento que la aplicación esté
-configurada con `docker-compose` para que pueda ser desplegada sin dificultades
-en cualquier entorno.
+* `POST /auth`
 
-El _boilerplate_ ya cuenta con una configuración incial de `docker-compose` para
-la aplicación de node, tu tarea será extender esa configuración para incluir la
-configuración de base de datos que hayas elegido. Ten en cuenta que como vas a
-tener dos servidores corriendo sobre una misma configuración, deberás exponer
-los servicios en diferentes puertos.
+```sh
+Body 
 
-Para este proyecto te recomendamos usar `docker-compose` localmente (en tu
-computadora) para ejecutar la aplicación junto con la base de datos
-seleccionada. Por otro lado, con respecto al despliegue, no es obligatorio usar
-`docker-compose`, puedes elegir el proveedor (o proveedores) que prefieras junto
-con el mecanismo de despligue y estrategia de alojamiento. Te recomendamos
-explorar las siguientes opciones:
+{ 
+    "email": "admin@localhost.com",
+    "password": "QWERTY12345678"
+}   
 
-* [Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) es
-  probablemente la opción más _sencilla_ (la que requiere menos configuración) y
-  nos permite alojar el servidor web con pocos clicks.
-* Si quieres explorar opciones más personalizadas y ver docker del lado del
-  servidor puedes cosiderar proveedores como
-  [AWS (Amazon Web Services)](https://aws.amazon.com/) o
-  [GCP (Google Cloud Platform)](https://cloud.google.com/), ambos algún tipo de
-  _free tier_ así como tanto _instancias_ de _servidores virtuales_ (VPS) donde
-  configurar nuestro propio Docker o servicios para desplegar aplicaciones en
-  contenedores (por ejemplo [Compute Engine](https://cloud.google.com/compute/docs/containers)
-  de GCP o [Elastic Container Service](https://aws.amazon.com/ecs/) de AWS).
-* Si quieres trabajar con MongoDB, [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-  es una muy buena opción para alojar nuestra base datos de producción, la cuál
-  podemos usar en conjunción con cualquiera de las opciones mencionadas arriba.
+Body Response
 
-Si tienes dudas sobre las diferentes (y múltiples) opciones de despliegue no
-dudes en consultar con tus pares y tus coaches.
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI2MGQ5ZTQzZjIxMzY2ODYzZWNkOWMwNzQiLCJlbWFpbCI6ImFkbWluQGxvY2FsaG9zdC5jb20iLCJyb2xlcyI6eyJhZG1pbiI6dHJ1ZX0sImlhdCI6MTYyNDk0MjYyNiwiZXhwIjoxNjI0OTQ2MjI2fQ.YQpo4cZylNMlsAhJLfMHPIxG2-YpxT3CabRVZm5e0mA"
+}
+``` 
+#### 5.1.3 `/users`
 
-## 6. Pistas, tips y lecturas complementarias
 
-* [Express](https://expressjs.com/)
-* [MongoDB](https://www.mongodb.com/)
-* [docker](https://docs.docker.com/)
-* [docker compose](https://docs.docker.com/compose/)
-* [Postman](https://www.getpostman.com)
-* [Variable de entorno - Wikipedia](https://es.wikipedia.org/wiki/Variable_de_entorno)
-* [`process.env` - Node.js docs](https://nodejs.org/api/process.html#process_process_env)
+* `GET /users`
 
-***
+```sh
+https://nodejs-bq-api.herokuapp.com/users?limit=2&page=1
+https://nodejs-bq-api.herokuapp.com/users (Default: limit = 10 and page = 1)
+(Requiere solo Authenthicación (token))
 
-## 7 HTTP API Checklist
 
-### 7.1 `/`
+Body Response
 
-* [ ] `GET /`
+[
+    {
+        "roles": {
+            "admin": true
+        },
+        "_id": "60d9e43f21366863ecd9c074",
+        "email": "admin@localhost.com",
+        "password": "$2b$10$ypVUwIBq41YGOrQmiK/TOevnPdxEXCVwYq.Z6WnAuJG3m4yFs4AAW"
+    },
+    {
+        "roles": {
+            "admin": true
+        },
+        "_id": "60daa899fc51e50015689ed3",
+        "email": "milumon@outlook.com",
+        "password": "$2b$10$9JyJ1KOaFdaAVhwL51Kc8Oy0u2Jc.a1SREtV6mQ76yy11YRk8AxY."
+    }
+]
 
-### 7.2 `/auth`
+```
 
-* [ ] `POST /auth`
+* `GET /users/:uid`
 
-### 7.3 `/users`
+```sh
+https://nodejs-bq-api.herokuapp.com/users/60d9e43f21366863ecd9c074 
+(Requiere solo Authenthicación (token))
 
-* [ ] `GET /users`
-* [ ] `GET /users/:uid`
-* [ ] `POST /users`
-* [ ] `PUT /users/:uid`
-* [ ] `DELETE /users/:uid`
 
-### 7.4 `/products`
+Body Response
 
-* [ ] `GET /products`
-* [ ] `GET /products/:productid`
-* [ ] `POST /products`
-* [ ] `PUT /products/:productid`
-* [ ] `DELETE /products/:productid`
+{
+    "_id": "60d9e43f21366863ecd9c074",
+    "email": "admin@localhost.com",
+    "password": "$2b$10$ypVUwIBq41YGOrQmiK/TOevnPdxEXCVwYq.Z6WnAuJG3m4yFs4AAW",
+    "roles": {
+        "admin": true
+    }
+}
+```
 
-### 7.5 `/orders`
 
-* [ ] `GET /orders`
-* [ ] `GET /orders/:orderId`
-* [ ] `POST /orders`
-* [ ] `PUT /orders/:orderId`
-* [ ] `DELETE /orders/:orderId`
+* `POST /users`
+
+```sh
+
+https://nodejs-bq-api.herokuapp.com/users
+(Requiere Authenthicación (token) con permisos de administrador)
+
+Body
+
+{
+    "email": "milumon@outlook.com",
+    "password": "santaclaus",
+    "roles" :  {
+        "admin": false
+     } 
+}
+
+Body Response 
+
+{
+    "_id": "60d9e43f21366863ecd9c074",
+    "email": "admin@localhost.com",
+    "password": "$2b$10$ypVUwIBq41YGOrQmiK/TOevnPdxEXCVwYq.Z6WnAuJG3m4yFs4AAW",
+    "roles": {
+        "admin": true
+    }
+}
+```
+
+* `PUT /users/:uid`
+
+```sh
+
+https://nodejs-bq-api.herokuapp.com/users/60d9e43f21366863ecd9c074
+(Requiere Authenthicación (token) con permisos de administrador)
+
+Body
+
+{
+    "email": "milumon@outlook.com",
+    "password": "papanoel",
+    "roles" :  {
+        "admin": false
+     } 
+}
+
+Body Response 
+
+{
+    "roles": {
+        "admin": false
+    },
+    "_id": "60daa899fc51e50015689ed3",
+    "email": "milumon@outlook.com",
+    "password": "$2b$10$MBMf1uVzYFrbcn47uL3QfOwqYo2tnRY/Ms8btpbGK5FpHUnLjh1Zm"
+}
+```
+
+* `DELETE /users/:uid`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/users/60daa899fc51e50015689ed3
+(Requiere Authenthicación (token) con permisos de administrador)
+
+
+Body Response
+
+{
+    "roles": {
+        "admin": false
+    },
+    "_id": "60daa899fc51e50015689ed3",
+    "email": "milumon@outlook.com",
+    "password": "$2b$10$MBMf1uVzYFrbcn47uL3QfOwqYo2tnRY/Ms8btpbGK5FpHUnLjh1Zm"
+} 
+```
+
+#### 5.1.4 `/products`
+
+* `GET /products`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/products?limit=2&page=1
+https://nodejs-bq-api.herokuapp.com/products (Default: limit = 10 and page = 1)
+(Requiere solo Authenthicación (token))
+
+
+Body Response
+
+[
+    {
+        "_id": "60d9fe6a89a1160015125baa",
+        "name": "arroz con pollo",
+        "price": 10,
+        "type": "criollo",
+        "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+        "dateEntry": "2021-06-28T16:52:58.800Z"
+    },
+    {
+        "_id": "60da073589a1160015125bae",
+        "name": "agua",
+        "price": 5,
+        "type": "drink",
+        "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+        "dateEntry": "2021-06-28T17:30:29.307Z"
+    }
+]
+
+```
+
+* `GET /products/:productid`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/products/60d9fe6a89a1160015125baa
+(Requiere solo Authenthicación (token))
+
+
+Body Response
+
+{
+    "_id": "60d9fe6a89a1160015125baa",
+    "name": "arroz con pollo",
+    "price": 10,
+    "type": "criollo",
+    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+    "dateEntry": "2021-06-28T16:52:58.800Z"
+}
+``` 
+
+* `POST /products`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/products
+(Requiere Authenthicación (token) con permisos de administrador)
+
+
+Body 
+
+{ 
+    "name": "arroz con pollo",
+    "price": 10,
+    "type": "criollo",
+    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg"
+}
+
+Body Response
+
+{
+    "_id": "60daac5dfc51e50015689ed4",
+    "name": "arroz con pollo",
+    "price": 10,
+    "type": "criollo",
+    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+    "dateEntry": "2021-06-29T05:15:09.200Z"
+}
+
+``` 
+ 
+
+* `PUT /products/:productid`
+
+
+```sh
+https://nodejs-bq-api.herokuapp.com/products/60d9fe6a89a1160015125baa
+(Requiere Authenthicación (token) con permisos de administrador)
+
+
+Body 
+
+{ 
+    "name": "arroz con pollito",
+    "price": 8,
+    "type": "criollo",
+    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg"
+}
+
+Body Response
+
+{
+    "_id": "60d9fe6a89a1160015125baa",
+    "name": "arroz con pollito",
+    "price": 8,
+    "type": "criollo",
+    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+    "dateEntry": "2021-06-28T16:52:58.800Z"
+}
+``` 
+
+
+
+* `DELETE /products/:productid`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/products/60d9fe6a89a1160015125baa
+(Requiere Authenthicación (token) con permisos de administrador) 
+
+Body Response
+
+{
+    "_id": "60d9fe6a89a1160015125baa",
+    "name": "arroz con pollito",
+    "price": 8,
+    "type": "criollo",
+    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+    "dateEntry": "2021-06-28T16:52:58.800Z"
+}
+``` 
+
+#### 5.1.5 `/orders`
+
+* `GET /orders`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/orders?limit=2&page=1
+https://nodejs-bq-api.herokuapp.com/orders
+(Solo Requiere Authenthicación (token))
+ 
+
+Body Response
+
+[
+    {
+        "status": "pending",
+        "_id": "60daadaefc51e50015689eda",
+        "userId": "60d9e43f21366863ecd9c074",
+        "client": "Sonia",
+        "products": [
+            {
+                "_id": "60daadaefc51e50015689edb",
+                "qty": 1,
+                "product": {
+                    "_id": "60daada4fc51e50015689ed7",
+                    "name": "arroz con pollito",
+                    "price": 8,
+                    "type": "criollo",
+                    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+                    "dateEntry": "2021-06-29T05:20:36.300Z"
+                }
+            }
+        ],
+        "dateEntry": "2021-06-29T05:20:46.361Z",
+        "dateProcessed": "2021-06-29T05:20:46.361Z"
+    },
+    {
+        "status": "pending",
+        "_id": "60dab08ffc51e50015689ee5",
+        "userId": "60d9e43f21366863ecd9c074",
+        "client": "Sonia",
+        "products": [
+            {
+                "_id": "60dab08ffc51e50015689ee6",
+                "qty": 1,
+                "product": {
+                    "_id": "60daada4fc51e50015689ed7",
+                    "name": "arroz con pollito",
+                    "price": 8,
+                    "type": "criollo",
+                    "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+                    "dateEntry": "2021-06-29T05:20:36.300Z"
+                }
+            }
+        ],
+        "dateEntry": "2021-06-29T05:33:03.720Z",
+        "dateProcessed": "2021-06-29T05:33:03.720Z"
+    }
+]
+
+``` 
+
+* `GET /orders/:orderId`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/orders/60daadaefc51e50015689eda
+(Solo Requiere Authenthicación (token))
+
+ 
+
+Body Response
+
+{
+    "status": "pending",
+    "_id": "60daadaefc51e50015689eda",
+    "userId": "60d9e43f21366863ecd9c074",
+    "client": "Sonia",
+    "products": [
+        {
+            "_id": "60daadaefc51e50015689edb",
+            "qty": 1,
+            "product": {
+                "_id": "60daada4fc51e50015689ed7",
+                "name": "arroz con pollito",
+                "price": 8,
+                "type": "criollo",
+                "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+                "dateEntry": "2021-06-29T05:20:36.300Z"
+            }
+        }
+    ],
+    "dateEntry": "2021-06-29T05:20:46.361Z",
+    "dateProcessed": "2021-06-29T05:20:46.361Z"
+}
+
+``` 
+
+* `POST /orders`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/orders
+(Requiere Authenthicación (token) con permisos de administrador)
+
+
+Body 
+
+{
+    "status": "pending",
+    "userId": "60d9e43f21366863ecd9c074",
+    "client": "Sonia",
+    "products": [
+        {
+            "productId": "60da073589a1160015125bae",
+            "qty": 1
+        }
+    ]
+}
+
+Body Response
+
+{
+    "status": "pending",
+    "_id": "60daaee1fc51e50015689ee2",
+    "userId": "60d9e43f21366863ecd9c074",
+    "client": "Sonia",
+    "products": [
+        {
+            "_id": "60daaee1fc51e50015689ee3",
+            "qty": 1,
+            "product": {
+                "_id": "60da073589a1160015125bae",
+                "name": "agua",
+                "price": 5,
+                "type": "drink",
+                "image": "https://i.ytimg.com/vi/hXBU-wYE_l0/maxresdefault.jpg",
+                "dateEntry": "2021-06-28T17:30:29.307Z"
+            }
+        }
+    ],
+    "dateEntry": "2021-06-29T05:25:53.803Z",
+    "dateProcessed": "2021-06-29T05:25:53.803Z"
+}
+
+``` 
+
+* `PUT /orders/:orderId`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/orders
+(Requiere Authenthicación (token) con permisos de administrador)
+
+
+Body 
+
+{
+    "status": "delivered",
+    "userId": "60d9e43f21366863ecd9c074",
+    "client": "Sonia",
+    "products": [
+        {
+            "productId": "60da073589a1160015125bae",
+            "qty": 1
+        }
+    ],
+    "dateEntry": "2021-06-29T05:25:53.803Z",
+    "dateProcessed": "2021-06-29T05:25:53.803Z"
+}
+
+Body Response
+
+{
+    "status": "delivered",
+    "_id": "60daaee1fc51e50015689ee2",
+    "userId": "60d9e43f21366863ecd9c074",
+    "client": "Sonia",
+    "products": [
+        {
+            "_id": "60daaf66fc51e50015689ee4",
+            "qty": 1
+        }
+    ],
+    "dateEntry": "2021-06-29T05:25:53.803Z",
+    "dateProcessed": "2021-06-29T05:25:53.803Z"
+}
+
+``` 
+
+* `DELETE /orders/:orderId`
+
+```sh
+https://nodejs-bq-api.herokuapp.com/orders/60daaee1fc51e50015689ee2
+(Requiere Authenthicación (token) con permisos de administrador)
+
+ 
+Body Response
+
+{
+    "status": "delivered",
+    "_id": "60daaee1fc51e50015689ee2",
+    "userId": "60d9e43f21366863ecd9c074",
+    "client": "Sonia",
+    "products": [
+        {
+            "_id": "60daaf66fc51e50015689ee4",
+            "qty": 1
+        }
+    ],
+    "dateEntry": "2021-06-29T05:25:53.803Z",
+    "dateProcessed": "2021-06-29T05:25:53.803Z"
+}
+
+``` 
+   
+
+### Node
+
+* [x] Instalar y usar módulos. ([npm](https://www.npmjs.com/))
+* [x] [Configuración de package.json.](https://docs.npmjs.com/files/package.json)
+* [x] [Configuración de npm-scripts](https://docs.npmjs.com/misc/scripts)
+
+### Testing
+
+* [x] [Testeo unitario.](https://jestjs.io/docs/es-ES/getting-started)
+* [x] [Testeo asíncrono.](https://jestjs.io/docs/es-ES/asynchronous)
+* [x] Tests de integración.
+
+### Estructura del código y guía de estilo
+
+* [x] Organizar y dividir el código en módulos (Modularización)
+* [x] Uso de identificadores descriptivos (Nomenclatura | Semántica)
+* [x] Uso de linter (ESLINT)
+
+### Git y GitHub
+
+* [x] Uso de comandos de git (add | commit | pull | status | push)
+* [x] Manejo de repositorios de GitHub (clone | fork | gh-pages)
+* [x] Colaboración en Github (branches | pull requests | |tags)
+* [x] Organización en Github (projects | issues | labels | milestones)
+
+### Express
+
+* [x] Rutas.
+* [x ] `middlewares`
+
+### HTTP
+
+* [x] [Request, Response.](https://developer.mozilla.org/es/docs/Web/HTTP/Messages)
+* [x] Headers.
+* [x] Body.
+* [x] [Verbos HTTP.](https://developer.mozilla.org/es/docs/Web/HTTP/Methods)
+* [x] [Codigos de status de HTTP.](https://dev.to/khaosdoctor/the-complete-guide-to-status-codes-for-meaningful-rest-apis-1-5c5)
+* [x] Encodings y `JSON`.
+* [x] [CORS.](https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS)
+
+### Autenticación
+
+* [x] `JWT`
+* [x] Almacenamiento y acceso de contraseñas.
+
+### WebOps
+
+* [x] Variables de entorno.
+* [ ] Contenedores (Docker).
+* [ ] Docker compose.
+
+### Base de datos (MongoDB)
+
+* [x] Instalación.
+* [x] Conexión a través de cliente.
+* [x] Connection string.
+* [x] Queries y comandos (creación, lectura, actualización, eliminación)
