@@ -5,6 +5,7 @@ const { pagination, isObjectId } = require('../utils/utils');
 const getOrders = async (req, res, next) => {
   try {
     const options = {
+      populate: 'products.product',
       page: parseInt(req.query.page, 10) || 1,
       limit: parseInt(req.query.limit, 10) || 10,
     };
