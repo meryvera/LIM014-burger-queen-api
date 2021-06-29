@@ -6,23 +6,23 @@
         {
             "qty": 1,
             "product": {
-                "product._id": "1",
-                "product.name": "Salchipapa",
-                "product.price": 10.3,
-                "product.image": "image.jpg",
-                "product.type": "Grasa",
-                "product.dateEntry": "10/11/2021 00:42:00"
+                "productId": "1",
+                "name": "Salchipapa",
+                "price": 10.3,
+                "image": "image.jpg",
+                "type": "Grasa",
+                "dateEntry": "10/11/2021 00:42:00"
             }
         },
         {
             "qty": 1,
             "product": {
-                "product._id": "2",
-                "product.name": "adas",
-                "product.price": 10.3,
-                "product.image": "image.jpg",
-                "product.type": "Grasa",
-                "product.dateEntry": "10/11/2021 00:42:00"
+                "productId": "2",
+                "name": "adas",
+                "price": 10.3,
+                "image": "image.jpg",
+                "type": "Grasa",
+                "dateEntry": "10/11/2021 00:42:00"
             }
         }
     ],
